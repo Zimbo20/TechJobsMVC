@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using TechJobs.Models;
 
-namespace TechJobs.Controllers
+namespace TechJobs.Controllers     //corresponding page /List
+                                    // implement the "All" option
 {
     public class ListController : Controller
     {
@@ -21,15 +22,15 @@ namespace TechJobs.Controllers
             columnChoices.Add("all", "All");
         }
 
-        public IActionResult Index()
+        public IActionResult Index()  // displays different typs of lists that the user can view
         {
             ViewBag.columns = columnChoices;
             return View();
         }
 
-        public IActionResult Values(string column)
+        public IActionResult Values(string column)  //Values and Jobs display actual data obtained from JobData
         {
-            if (column.Equals("all"))
+            if (column.Equals("all"))    
             {
                 List<Dictionary<string, string>> jobs = JobData.FindAll();
                 ViewBag.title =  "All Jobs";
@@ -38,7 +39,7 @@ namespace TechJobs.Controllers
             }
             else
             {
-                List<string> items = JobData.FindAll(column);
+                List<string> items = JobData.FindAll(column);   //column determines which values to fetch from JobData 
                 ViewBag.title =  "All " + columnChoices[column] + " Values";
                 ViewBag.column = column;
                 ViewBag.items = items;
@@ -46,7 +47,7 @@ namespace TechJobs.Controllers
             }
         }
 
-        public IActionResult Jobs(string column, string value)
+        public IActionResult Jobs(string column, string value)  // deals with specific value in specific column
         {
             List<Dictionary<String, String>> jobs = JobData.FindByColumnAndValue(column, value);
             ViewBag.title = "Jobs with " + columnChoices[column] + ": " + value;
